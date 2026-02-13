@@ -1,11 +1,14 @@
 package com.example.heloworld.controller;
 
+import com.example.heloworld.data.master.model.Users;
 import com.example.heloworld.request.CreateRequest;
 import com.example.heloworld.request.ReadRequest;
 import com.example.heloworld.response.CreateResponse;
 import com.example.heloworld.response.GreetingsResponse;
 import com.example.heloworld.response.ReadResponse;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 public class GreetingsController {
@@ -21,6 +24,8 @@ public class GreetingsController {
             @RequestBody
             CreateRequest request){
         // TODO logic create data user
+        Users dataUser = new Users();
+        dataUser.setId(UUID.randomUUID().toString());
 
         CreateResponse result = new CreateResponse();
         result.setResponseCode("00");
