@@ -48,13 +48,11 @@ public class GreetingsController {
 
     //pr readuser
     @GetMapping("/readUser")
-    public ReadResponse readUser(
-            @RequestBody
-            ReadRequest request){
+    public ReadResponse readUser(){
         ReadResponse result = new ReadResponse();
         result.setResponseCode("00");
         result.setResponseMessage("Create Success");
-        result.setDataRequest(request);
+        result.setData(usersRepository.findAll());
         return result;
     }
     //db postgre (user) install
