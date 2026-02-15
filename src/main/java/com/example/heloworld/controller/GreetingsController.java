@@ -4,9 +4,8 @@ import com.example.heloworld.data.master.model.Users;
 import com.example.heloworld.data.master.repo.UsersRepository;
 import com.example.heloworld.request.CreateRequest;
 import com.example.heloworld.request.ReadRequest;
-import com.example.heloworld.response.CreateResponse;
-import com.example.heloworld.response.GreetingsResponse;
-import com.example.heloworld.response.ReadResponse;
+import com.example.heloworld.request.UpdateRequest;
+import com.example.heloworld.response.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -55,5 +54,36 @@ public class GreetingsController {
         result.setData(usersRepository.findAll());
         return result;
     }
-    //db postgre (user) install
+
+    //pr updateuser
+    @PutMapping("/updateUser/{id}")
+    public UpdateResponse updateuser(
+            @RequestBody
+            UpdateRequest request, @PathVariable String id){
+        Users dataUser = usersRepository.findById(id).orElseThrow(() -> new RuntimeException("Data user tidak ditemukan"));
+        dataUser.setEmail(request.getEmail());
+        dataUser.setUsername(request.getUsername());
+        dataUser.setPassword(request.getPassword());
+        dataUser.setAge(request.getAge());
+        dataUser.setAddress(request.getAddress().getStreet() + ", " + request.getAddress().getCity() + ", " + request.getAddress().getProvince());
+        usersRepository.save(dataUser);
+        UpdateResponse result = new UpdateResponse();
+        result.setResponseCode("00");
+        result.setResponseMessage("Update Success");
+        result.setDataRequest(request);
+
+        return result;
+    }
+
+    @DeleteMapping("/deleteUser/{id}")
+    public DeleteResponse deleteUser(@PathVariable String id) {
+        DeleteResponse result = new DeleteResponse();
+        usersRepository.deleteById(id);
+        result.setResponseCode("00");
+        result.setResponseMessage("Delete Success");
+        result.setDeletedId(id);
+
+        return result;
+    }
+
 }
